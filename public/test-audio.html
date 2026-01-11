@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Audio Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 50px;
+            background: #f5f5f5;
+        }
+
+        button {
+            background: #f97316;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+        }
+
+        button:hover {
+            background: #ea580c;
+        }
+
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            border-left: 4px solid #f97316;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🔔 Audio Notification Test</h1>
+    <p>Click a button to test audio playback:</p>
+
+    <div>
+        <button onclick="testAudio(1)">Test Table 1</button>
+        <button onclick="testAudio(5)">Test Table 5</button>
+        <button onclick="testAudio(10)">Test Table 10</button>
+    </div>
+
+    <div class="status" id="status">
+        Ready to test...
+    </div>
+
+    <script>
+        function testAudio(tableNum) {
+            const status = document.getElementById('status');
+            const audioPath = `/Audio/tabel ${tableNum}.mp3`;
+
+            status.innerHTML = `🔄 Loading audio: ${audioPath}`;
+
+            const audio = new Audio(audioPath);
+            audio.volume = 0.8;
+
+            audio.addEventListener('loadeddata', () => {
+                status.innerHTML = `✅ Audio loaded successfully: ${audioPath}`;
+            });
+
+            audio.addEventListener('play', () => {
+                status.innerHTML = `▶️ Playing: Table ${tableNum} notification`;
+            });
+
+            audio.addEventListener('ended', () => {
+                status.innerHTML = `✔️ Completed: Table ${tableNum} notification`;
+            });
+
+            audio.addEventListener('error', (e) => {
+                status.innerHTML = `❌ Error loading audio: ${audioPath}<br>Error: ${e.type}`;
+                console.error('Audio error:', e);
+            });
+
+            audio.play().catch(err => {
+                status.innerHTML = `❌ Error playing audio: ${err.message}`;
+                console.error('Play error:', err);
+            });
+        }
+    </script>
+</body>
+
+</html>
